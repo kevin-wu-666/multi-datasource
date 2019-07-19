@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
@@ -24,9 +23,6 @@ import java.lang.reflect.Method;
 @Slf4j
 public class DataSourceAspect {
 
-	@Autowired
-	private DataSourceContextHolder holder;
-
 	@Pointcut("@annotation(com.wjl.multidatasource.annotation.DataSourceType)")
 	public void pointCut(){ }
 
@@ -38,10 +34,10 @@ public class DataSourceAspect {
 		if (annotation != null){
 			DataSourceType type = ((DataSourceType) annotation);
 			if (type.type().equals(DBType.MASTER)){
-				holder.set(DBType.MASTER);
+				DataSourceContextHolder.set(DBType.MASTER);
 				log.info("master dataSource");
 			}else {
-				holder.set(DBType.SLAVE1);
+				DataSourceContextHolder.set(DBType.SLAVE1);
 				log.info("slave1 dataSource");
 			}
 		}
